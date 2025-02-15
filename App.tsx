@@ -76,7 +76,7 @@ function App(): React.JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
+          <Section title="Step One1233">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
@@ -114,5 +114,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+
+console.log('12133');
 
 export default App;
