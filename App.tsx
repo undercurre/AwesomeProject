@@ -6,54 +6,23 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
   View,
+  Image,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {Dimensions} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import HomeScreen from './views/home';
+import MineScreen from './views/mine';
+import QRCodeScannerPage from './views/scan';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -71,50 +40,95 @@ function App(): React.JSX.Element {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One1233">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+        <View style={styles.container}>
+          <NavigationContainer>
+            <StackNavigator />
+          </NavigationContainer>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
+const {width, height} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    width: width,
+    minHeight: height,
+    opacity: 0.8,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  tabbarIcon: {
+    width: 30,
+    height: 30,
   },
 });
 
-console.log('12133');
+// 创建底部 Tab 导航器
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function TabNavigator() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: '#fff',
+        },
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+        tabBarActiveBackgroundColor: '#fff',
+        tabBarInactiveBackgroundColor: '#fff',
+        headerShown: false,
+        animation: 'fade',
+      }}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: HomeTabIcon,
+        }}
+      />
+      <Tab.Screen
+        name="Mine"
+        component={MineScreen}
+        options={{
+          tabBarIcon: MineTabIcon,
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+function StackNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Tab" component={TabNavigator} />
+      <Stack.Screen name="QRScanner" component={QRCodeScannerPage} />
+    </Stack.Navigator>
+  );
+}
+
+const HomeTabIcon = () => (
+  <Image
+    source={require('./assets/images/home/home.png')} // 图片路径
+    style={styles.tabbarIcon}
+  />
+);
+
+const MineTabIcon = () => (
+  <Image
+    source={require('./assets/images/home/mine.png')} // 图片路径
+    style={styles.tabbarIcon}
+  />
+);
+
+export type RootStackParamList = {
+  Home: undefined;
+  Mine: undefined;
+  QRScanner: undefined;
+};
 
 export default App;

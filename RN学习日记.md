@@ -68,3 +68,37 @@ Failed to install the app. Command failed with exit code 1: gradlew.bat app:inst
    开启远程调试，可通过 Chrome Developer Tools 工具调试程序。选中后将打开网址为 http://localhost:8081/debugger-ui/
 
 2. 在 PC 运行端按下 J 就可以打开 Chrome DevTools
+
+## RN 没有独立单位
+
+### 全屏方案
+
+```tsx
+import {Dimensions} from "react-native";
+
+const {width, height} = Dimensions.get('window');
+
+...
+render () {
+    return (
+        <View style={{width,height}}>
+        </View>
+    )
+}
+...
+
+```
+
+## 依赖不足
+
+```
+metro has encountered an error while trying to resolve module navigation/native
+```
+
+通常是没有安装 `navigation/native(目标包)` 的依赖
+
+## tabBar 使用 @react-native-navigation/native
+
+### 隐藏顶部栏 headerShown: false,
+
+### 使用后启动指令需要更改为`npx react-native start`
