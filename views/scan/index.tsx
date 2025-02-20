@@ -1,3 +1,4 @@
+import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -13,12 +14,22 @@ import {
   useCameraPermission,
   useCameraDevice,
 } from 'react-native-vision-camera';
+import {RootStackParamList} from '../../App';
 
-function ScanCode() {
+type ScanScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'QRScanner'
+>;
+
+interface ScanScreenProps {
+  navigation: ScanScreenNavigationProp;
+}
+
+const ScanScreen: React.FC<ScanScreenProps> = ({navigation}) => {
   const [checked, setChecked] = useState(false); // 获取权限,当有了权限再打开摄像头
   const device = useCameraDevice('back'); // 控制扫码为后置摄像头
   const {hasPermission, requestPermission} = useCameraPermission(); // 获取/申请权限(第一次需要申请,后续不用)
-  const [isActive] = useState(true); // 控制相机是否可用
+  const [isActive, setIsActive] = useState(true); // 控制相机是否可用
   const [scanLineAnimation] = useState(new Animated.Value(0));
   const startScanAnimation = () => {
     Animated.loop(
@@ -43,21 +54,27 @@ function ScanCode() {
     // 后置扫码主要组件
     codeTypes: ['qr', 'ean-13'],
     onCodeScanned: codes => {
-      console.log('codes', codes);
-      // 如果有axios请求的话,在请求到数据跳转页面之前一定要停用相机,否则软件会崩溃
-      // setIsActive(false)
+      if (codes.length > 0) {
+        // 如果有axios请求的话,在请求到数据跳转页面之前一定要停用相机,否则软件会崩溃
+        setIsActive(false);
+        navigation.replace('Webview', {
+          url: codes[0].value || '',
+        });
+      }
       console.log(`Scanned ${codes.length} codes!`);
     },
   });
 
   return (
     <View style={styles.container}>
-      <Button
-        title="获取权限"
-        onPress={() => {
-          setChecked(hasPermission); // 点击按钮获取权限(因为第一次安装软件,获取完权限后页面不会立即显示,需要点一下按钮,后续不用)
-        }}
-      />
+      {device && !checked && (
+        <Button
+          title="获取权限"
+          onPress={() => {
+            setChecked(hasPermission); // 点击按钮获取权限(因为第一次安装软件,获取完权限后页面不会立即显示,需要点一下按钮,后续不用)
+          }}
+        />
+      )}
       {device && checked ? (
         <Camera
           style={styles.camera}
@@ -90,7 +107,7 @@ function ScanCode() {
       </View>
     </View>
   );
-}
+};
 
 const {width, height} = Dimensions.get('window');
 
@@ -202,4 +219,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScanCode;
+export default ScanScreen;

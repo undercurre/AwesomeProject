@@ -5,74 +5,39 @@
  * @format
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {WebView} from 'react-native-webview';
+import {RootStackParamList} from '../../App';
+import {StackScreenProps} from '@react-navigation/stack';
 
-function WebViewContainer(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+type WebViewScreenProp = StackScreenProps<RootStackParamList, 'Webview'>;
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const WebViewContainer: React.FC<WebViewScreenProp> = ({route}) => {
+  const [url, setUrl] = useState(
+    'http://81.71.85.68:9006/web/cms/markH5/product/1',
+  );
+
+  useEffect(() => {
+    if (route.params) {
+      setUrl(route.params.url);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: Colors.Black,
-          }}>
-          <WebView
-            source={{uri: 'http://81.71.85.68:9006/web/cms/markH5/product/1'}}
-            originWhitelist={['*']} // 允许所有来源
-            style={styles.webView}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <WebView source={{uri: url}} style={styles.webView} />
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  container: {
+    flex: 1,
   },
   webView: {
-    height: 800,
-  },
-  bg: {
-    height: 700,
-  },
-  title: {
-    fontSize: 40,
+    flex: 1,
   },
 });
 

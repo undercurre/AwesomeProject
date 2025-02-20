@@ -23,6 +23,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from './views/home';
 import MineScreen from './views/mine';
 import QRCodeScannerPage from './views/scan';
+import WebViewContainer from './views/webview';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
 
 // 创建底部 Tab 导航器
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 function TabNavigator() {
   return (
@@ -107,6 +108,7 @@ function StackNavigator() {
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Tab" component={TabNavigator} />
       <Stack.Screen name="QRScanner" component={QRCodeScannerPage} />
+      <Stack.Screen name="Webview" component={WebViewContainer} />
     </Stack.Navigator>
   );
 }
@@ -129,6 +131,8 @@ export type RootStackParamList = {
   Home: undefined;
   Mine: undefined;
   QRScanner: undefined;
+  Tab: undefined;
+  Webview: {url: string};
 };
 
 export default App;

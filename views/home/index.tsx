@@ -27,7 +27,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       <View style={styles.scanBtn}>
         <CustomButton
           onPress={onPressScanQrcode}
-          title="scan Qrcode"
+          title="Scan Qrcode"
           style={styles.scanBtn}
           textStyle={styles.scanBtnText}
         />
@@ -65,10 +65,14 @@ const styles = StyleSheet.create({
     width: 200,
     backgroundColor: '#000',
     borderRadius: 8,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#ddd',
   },
   scanBtnText: {
     color: '#fff',
     fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
