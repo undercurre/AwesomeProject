@@ -1,8 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, ImageBackground} from 'react-native';
-import CustomButton from '../../components/CustomBtn';
+import {
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  View,
+} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../App';
+
+import {Button} from 'react-native-paper';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -20,59 +27,54 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
       source={require('../../assets/images/home/bg2.png')} // 图片路径
       style={styles.background} // 背景样式
     >
-      <View style={styles.overlay}>
+      <View style={styles.textContainer}>
         <Text style={styles.text}>Mova</Text>
       </View>
 
-      <View style={styles.scanBtn}>
-        <CustomButton
-          onPress={onPressScanQrcode}
-          title="Scan Qrcode"
-          style={styles.scanBtn}
-          textStyle={styles.scanBtnText}
-        />
-      </View>
+      <Button
+        style={styles.scanBtn}
+        labelStyle={styles.scanBtnText}
+        icon={require('../../assets/images/home/scanner.png')}
+        mode="contained"
+        onPress={onPressScanQrcode}>
+        Scan Qrcode
+      </Button>
     </ImageBackground>
   );
 };
 
+const {width, height} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   background: {
     flex: 1, // 让背景图片充满整个屏幕
-    justifyContent: 'center', // 中心对齐内容
+    justifyContent: 'flex-start', // 中心对齐内容
     alignItems: 'center', // 中心对齐内容
   },
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)', // 可以加个半透明的遮罩层
-    padding: 20,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    marginBottom: 140,
+  textContainer: {
+    width: width,
+    height: height / 2,
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   text: {
-    width: 120,
     fontSize: 34,
-    color: '#fff',
+    color: '#333',
     letterSpacing: 6,
     textAlign: 'center',
-    transform: [{rotate: '8deg'}],
     fontStyle: 'italic', // 设置斜体
-    fontWeight: 'bold',
+    fontWeight: 900,
   },
   scanBtn: {
-    width: 200,
-    backgroundColor: '#000',
-    borderRadius: 8,
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: '#ddd',
+    width: width / 2,
+    height: 50,
+    borderRadius: 25,
   },
   scanBtnText: {
     color: '#fff',
     fontSize: 20,
     fontWeight: 'bold',
+    lineHeight: 30,
   },
 });
 
