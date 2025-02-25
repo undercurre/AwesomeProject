@@ -4,129 +4,98 @@ import {
   ScrollView,
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
+import {Divider, Searchbar} from 'react-native-paper';
+import PostItem from './components/PostItem';
 
 const SocialScreen = () => {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <Text style={styles.header}>Home</Text>
-
-        {/* Gaming Store Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Gaming store</Text>
-          <Text style={styles.sectionSubtitle}>Upgrade your gaming gear</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Shop now</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Continue Shopping */}
-        <Text style={styles.categoryTitle}>Keep shopping for Air fryers</Text>
-        <Text style={styles.categoryTitle}>
-          More to explore in Food containers
-        </Text>
-
-        {/* Repeat Gaming Section */}
-        <View style={[styles.section, styles.sectionAlt]}>
-          <Text style={styles.sectionTitle}>Upgrade your gaming gear</Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Continue shopping deals</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Deal Cards */}
-        <View style={styles.dealsContainer}>
-          <View style={[styles.dealCard, styles.redCard]}>
-            <Text style={styles.dealPercentage}>40% off</Text>
-            <Text style={styles.dealText}>Limited time deal</Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Post</Text>
+          <View style={styles.searchBar}>
+            <Searchbar
+              icon={require('../../assets/images/mall/search.png')}
+              placeholder="Search"
+              onChangeText={setSearchQuery}
+              value={searchQuery}
+            />
           </View>
-
-          <View style={[styles.dealCard, styles.blueCard]}>
-            <Text style={styles.dealPercentage}>20% off</Text>
-            <Text style={styles.dealText}>Limited time deal</Text>
-          </View>
+        </View>
+        <View style={styles.gallery}>
+          {Array.from(new Array(10), (_, i) => {
+            return {
+              id: i.toString(),
+              image:
+                'http://mova-cms.oss-cn-shanghai.aliyuncs.com/images/1738995116385.jpeg',
+              name: `空气炸锅${i}号`,
+              description:
+                '这款智能厨房设备融合了先进的技术，为您的烹饪体验带来全新升级。它搭载了智能温控系统，能够精准监控和调整温度，确保每一道菜肴都达到完美的烹饪效果。无论是炖煮、煎炒还是蒸煮，温控系统都能根据不同的食材和烹饪方式自动调节，以达到最佳的火候。',
+              price: (i + 1) * 15,
+            };
+          }).map(item => (
+            <View key={item.id} style={styles.postItem}>
+              <PostItem
+                id={item.id}
+                image={item.image}
+                name={item.name}
+                description={item.description}
+                price={item.price}
+              />
+              <Divider style={styles.divider} bold={true} />
+            </View>
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
+const {width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 20,
-  },
-  section: {
-    backgroundColor: '#f5f5f5',
-    borderRadius: 12,
-    padding: 20,
-    marginVertical: 10,
-  },
-  sectionAlt: {
-    backgroundColor: '#e0f0ff',
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    marginBottom: 8,
-  },
-  sectionSubtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 15,
-  },
-  button: {
-    backgroundColor: '#007bff',
-    borderRadius: 8,
-    paddingVertical: 12,
+    flex: 1,
+    width: width,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 10,
+    paddingRight: 10,
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: '500',
+  headerText: {
+    fontSize: 20,
+    paddingRight: 20,
+    paddingLeft: 20,
+    fontWeight: 900,
   },
-  categoryTitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    marginVertical: 15,
+  searchBar: {
+    flex: 1,
   },
-  dealsContainer: {
-    marginVertical: 20,
+  gallery: {
+    width: width,
+    marginTop: 20,
+    marginBottom: 20,
   },
-  dealCard: {
-    borderRadius: 12,
-    padding: 20,
-    marginVertical: 10,
+  postItem: {
+    width: width,
   },
-  redCard: {
-    backgroundColor: '#ffe6e6',
-    borderColor: '#ff4d4d',
-    borderWidth: 1,
-  },
-  blueCard: {
-    backgroundColor: '#e6f3ff',
-    borderColor: '#4da6ff',
-    borderWidth: 1,
-  },
-  dealPercentage: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  dealText: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 8,
+  divider: {
+    height: 4,
+    backgroundColor: '#696969',
+    opacity: 0.8,
   },
 });
 

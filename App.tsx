@@ -138,7 +138,7 @@ function TabNavigator() {
         }}
       />
       <Tab.Screen
-        name="Find"
+        name="Post"
         component={SocialScreen}
         options={{tabBarIcon: socialTabIcon}}
       />
