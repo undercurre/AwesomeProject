@@ -52,6 +52,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
     navigation.navigate('QRScanner');
   };
 
+  const go2Report = () => {
+    navigation.navigate('Report');
+  };
+
   return (
     <ImageBackground
       source={require('../../assets/images/home/bg2.png')} // 图片路径
@@ -86,8 +90,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({navigation}) => {
             </View>
 
             <View style={styles.cardContainer}>
-              <Card style={styles.card}>
-                <Card.Title title="Health Report" left={ChartIcon} />
+              <Card style={styles.card} onPress={go2Report}>
+                <Card.Title title="Report" subtitle="Health" left={ChartIcon} />
                 <Card.Cover
                   source={{
                     uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVCYsEdPVWHVSTZCKyXHWy7AaaXTY6JE9JLA&s',

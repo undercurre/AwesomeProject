@@ -28,6 +28,7 @@ import LoginScreen from './views/login';
 import RegisterScreen from './views/register';
 import MallScreen from './views/mall';
 import SocialScreen from './views/social';
+import ReportScreen from './views/report';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -167,6 +168,7 @@ function StackNavigator() {
         <Stack.Screen name="Webview" component={WebViewContainer} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Report" component={ReportScreen} />
       </Stack.Navigator>
     </PaperProvider>
   );
@@ -212,6 +214,7 @@ export type RootStackParamList = {
   Webview: {url: string};
   Register: undefined;
   Login: undefined;
+  Report: undefined;
 };
 
 export default App;
